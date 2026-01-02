@@ -89,3 +89,58 @@ export const changeStatus = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Lỗi khi cập nhật trạng thái công việc" });
   }
 };
+
+//PATCH /api/v1/tasks/change-multi
+export const changeMutil = async (req: Request, res: Response) => {
+  try {
+    const { ids, key, value } = req.body;
+    enum ChangeKey {
+      STATUS = "status",
+      DELETE = "delete",
+    }
+    switch (key as ChangeKey) {
+      case ChangeKey.STATUS:
+        await Task.updateMany(
+          {
+            _id: { $in: ids }, //lấy id trong mảng này
+          },
+          {
+            status: value,
+          }
+        );
+        break;
+      case ChangeKey.DELETE:
+        await Task.updateMany(
+          {
+            _id: { $in: ids }, //lấy id trong mảng này
+          },
+          {
+            deleted: true,
+            deletedAt: new Date(),
+          }
+        );
+        res.json({
+          code: 200,
+          message: "Xóa thành công",
+        });
+        break;
+
+      default:
+        res.json({
+          code: 400,
+          message: "Không tồn tại",
+        });
+        break;
+    }
+
+    res.json({
+      code: 200,
+      message: "Cập nhập trạng thái thành công",
+    });
+  } catch (error) {
+    res.json({
+      code: 400,
+      message: "Không tồn tại",
+    });
+  }
+};
