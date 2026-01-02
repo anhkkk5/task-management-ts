@@ -17,5 +17,7 @@ router.patch("/change-multi", controller.changeMutil);
 router.post("/create", controller.create);
 //[Patch] /api/v1/tasks/edit/:id
 router.patch("/edit/:id", controller.edit);
+//[Delete] /api/v1/tasks/delete/:id
+router.delete("/delete/:id", controller.deleteTask);
 const taskRouter: Router = router;
 export { taskRouter };
