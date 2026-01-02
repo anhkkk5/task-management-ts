@@ -13,5 +13,7 @@ router.get("/detail/:id", controller.detail);
 router.patch("/change-status/:id", controller.changeStatus);
 //[Patch] /api/v1/tasks/change-multi
 router.patch("/change-multi", controller.changeMutil);
+//[Post] /api/v1/tasks/create
+router.post("/create", controller.create);
 const taskRouter: Router = router;
 export { taskRouter };

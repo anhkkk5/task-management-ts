@@ -144,3 +144,21 @@ export const changeMutil = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const create = async (req: Request, res: Response) => {
+  try {
+    const product = new Task(req.body);
+    const data = await product.save();
+
+    res.json({
+      code: 200,
+      message: "Tạo thành công",
+      data: data,
+    });
+  } catch (error) {
+    res.json({
+      code: 400,
+      message: "Lỗi khi tạo công việc!",
+    });
+  }
+};
