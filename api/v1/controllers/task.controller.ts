@@ -74,3 +74,18 @@ export const detail = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Lỗi khi lấy chi tiết công việc" });
   }
 };
+
+export const changeStatus = async (req: Request, res: Response) => {
+  try {
+    const id: string = req.params.id;
+
+    const status: string = req.body.status;
+    console.log(id, status);
+
+    await Task.updateOne({ _id: id }, { status: status });
+
+    res.json({ code: 200, message: "Cập nhật trạng thái thành công" });
+  } catch (error) {
+    res.status(500).json({ error: "Lỗi khi cập nhật trạng thái công việc" });
+  }
+};
