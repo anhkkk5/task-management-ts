@@ -64,22 +64,11 @@ export const login = async (req: Request, res: Response) => {
   }
 };
 
-//[Get] /api/v1/users/detail/:id
+//[Get] /api/v1/users/detail
 export const detail = async (req: Request, res: Response) => {
-  const id: string = req.params.id;
-
-  const user = await User.findOne({ _id: id, deleted: false }).select(
-    "-password -token"
-  );
-  if (!user) {
-    return res.json({
-      code: 404,
-      message: "Người dùng không tồn tại",
-    });
-  }
   res.json({
     code: 200,
     message: "Lấy thông tin người dùng thành công",
-    info: user,
+    info: req["user"],
   });
 };
