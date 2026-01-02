@@ -3,10 +3,19 @@ import { Request, Response } from "express";
 
 export const index = async (req: Request, res: Response) => {
   try {
-    const tasks = await Task.find({
+    interface FindQuery {
+      deleted: boolean;
+      status?: string;
+    }
+
+    const find: FindQuery = {
       deleted: false,
-    });
-    console.log(tasks);
+    };
+    if (req.query.status) {
+      find.status = String(req.query.status);
+    }
+    const tasks = await Task.find(find);
+
     res.json(tasks);
   } catch (error) {
     res.status(500).json({ error: "Lỗi khi lấy danh sách công việc" });
