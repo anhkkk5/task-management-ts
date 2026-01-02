@@ -1,12 +1,15 @@
 import Task from "../models/task.model";
 import { Request, Response } from "express";
 import paginationHelper from "../../../helpers/pagination";
+import searchHelper from "../../../helpers/search";
+
 export const index = async (req: Request, res: Response) => {
   try {
     //find
     interface FindQuery {
       deleted: boolean;
       status?: string;
+      title?: RegExp;
     }
 
     const find: FindQuery = {
@@ -17,6 +20,11 @@ export const index = async (req: Request, res: Response) => {
     }
     //end find
 
+    // Tìm kiếm theo từ khóa
+    const search = searchHelper(req.query);
+    if (search.keyword) {
+      find.title = search.regex;
+    }
     //pagination
     const countTasks = await Task.countDocuments(find); // số lượng tasks
     let objPagination = paginationHelper(
